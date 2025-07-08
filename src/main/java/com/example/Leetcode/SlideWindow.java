@@ -9,9 +9,12 @@ public class SlideWindow {
     public static void main(String[] args) {
 //        String s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT";
 //        findRepeatedDnaSequences(s);
-        String s1 = "aaabbb";
-        int k = 3;
-        System.out.println(longestSubstring1(s1,k));
+//        String s1 = "aaabbb";
+//        int k = 3;
+//        System.out.println(longestSubstring1(s1,k));
+        int[] test = {1,1,1,1};
+        int[] test2 = {1,2,1,1,1,2};
+        System.out.println(numberOfArithmeticSlices(test2));
 
     }
     //the window is fixed
@@ -101,6 +104,60 @@ public class SlideWindow {
         String subString = s.substring(current);
         res = Math.max(res,longestSubstring1(subString,k));
         return res;
+    }
+//100% correct
+    public static int numberOfArithmeticSlices(int[] nums) {
+        if(nums.length<3)return 0;
+        int left = 0;
+        int right = 3;
+        int res = 0;
+        while(left+3 <= right && right<= nums.length){
+            if(left+3<right){
+                if(valid(nums, left, right)){
+                    res++;
+                }
+                left++;
+            }
+            else{
+                if(valid(nums, left, right)){
+                    res++;
+                }
+                right++;
+                left = 0;
+            }
+        }
+        return res;
+
+    }
+    public static boolean valid(int[] nums, int left, int right){
+        int diff = nums[left+1]- nums[left];
+        for(int i=left+1; i< right; i++){
+            if((nums[i]-nums[i-1])!=diff){
+                return false;
+            }
+        }
+        return true;
+    }
+    public static int numberOfArithmeticSlices1(int[] nums) {
+        if(nums.length<3)return 0;
+        int right = 0;
+        int res = 0;
+        for(int left = 0; left<nums.length-2;left++){
+            right = left+2;
+            int diff = nums[left]-nums[left+1];
+            while(right<=nums.length){
+                if(nums[right]-nums[right-1]==diff){
+                    res++;
+                    right++;
+                }else{
+                    break;
+                }
+
+            }
+        }
+
+        return res;
+
     }
 
 }
